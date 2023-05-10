@@ -1,0 +1,8 @@
+[tasks.build]
+command = "cargo"
+args = ["build", "--release"]
+
+[tasks.install]
+dependencies = ["build"]
+script = "mkdir -p ~/.local/share/zellij/plugins && cp ./target/wasm32-wasi/release/based-header.wasm ~/.local/share/zellij/plugins/based-header.wasm"
+
