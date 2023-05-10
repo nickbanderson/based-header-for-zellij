@@ -3,6 +3,12 @@ name = "based-header"
 version = "0.1.0"
 edition = "2021"
 
+# Shrank .wasm from 2.6MB to 403KB, mostly due to `strip = true`
+[profile.release]
+lto = true
+opt-level = 's'
+strip = true
+
 [dependencies]
 colored = "2"
 ansi_term = "0.12"
