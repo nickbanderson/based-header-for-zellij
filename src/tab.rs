@@ -44,24 +44,19 @@ pub fn render_tab(
     };
     let left_separator = style!(foreground_color, background_color).paint(separator);
     let mut tab_text_len = text.width() + (separator_width * 2) + 2; // +2 for padding
-    let tab_styled_text = style!(foreground_color, background_color)
-        .bold()
-        .paint(format!(" {} ", text));
+    let tab_styled_text =
+        style!(foreground_color, background_color).bold().paint(format!(" {} ", text));
 
     let right_separator = style!(background_color, foreground_color).paint(separator);
     let tab_styled_text = if !focused_clients.is_empty() {
         let (cursor_section, extra_length) = cursors(focused_clients, palette);
         tab_text_len += extra_length;
         let mut s = String::new();
-        let cursor_beginning = style!(foreground_color, background_color)
-            .bold()
-            .paint("[")
-            .to_string();
+        let cursor_beginning =
+            style!(foreground_color, background_color).bold().paint("[").to_string();
         let cursor_section = ANSIStrings(&cursor_section).to_string();
-        let cursor_end = style!(foreground_color, background_color)
-            .bold()
-            .paint("]")
-            .to_string();
+        let cursor_end =
+            style!(foreground_color, background_color).bold().paint("]").to_string();
         s.push_str(&left_separator.to_string());
         s.push_str(&tab_styled_text.to_string());
         s.push_str(&cursor_beginning);
@@ -92,7 +87,8 @@ pub fn tab_style(
     if tab.is_sync_panes_active {
         tabname.push_str(" (Sync)");
     }
-    // we only color alternate tabs differently if we can't use the arrow fonts to separate them
+    // we only color alternate tabs differently if we can't use the arrow fonts to
+    // separate them
     if !capabilities.arrow_fonts {
         is_alternate_tab = false;
     }

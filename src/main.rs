@@ -47,7 +47,7 @@ impl ZellijPlugin for State {
                     should_render = true;
                 }
                 self.mode_info = mode_info;
-            },
+            }
             Event::TabUpdate(tabs) => {
                 if let Some(active_tab_index) = tabs.iter().position(|t| t.active) {
                     // tabs are indexed starting from 1 so we need to add 1
@@ -60,7 +60,7 @@ impl ZellijPlugin for State {
                 } else {
                     eprintln!("Could not find active tab.");
                 }
-            },
+            }
             Event::Mouse(me) => match me {
                 Mouse::LeftClick(_, col) => {
                     if self.mouse_click_pos != col {
@@ -68,20 +68,20 @@ impl ZellijPlugin for State {
                         self.should_change_tab = true;
                     }
                     self.mouse_click_pos = col;
-                },
+                }
                 Mouse::ScrollUp(_) => {
                     should_render = true;
                     switch_tab_to(min(self.active_tab_idx + 1, self.tabs.len()) as u32);
-                },
+                }
                 Mouse::ScrollDown(_) => {
                     should_render = true;
                     switch_tab_to(max(self.active_tab_idx.saturating_sub(1), 1) as u32);
-                },
-                _ => {},
+                }
+                _ => {}
             },
             _ => {
                 eprintln!("Got unrecognized event: {:?}", event);
-            },
+            }
         }
         should_render
     }
@@ -132,7 +132,7 @@ impl ZellijPlugin for State {
                 && self.mouse_click_pos < len_cnt + bar_part.len
                 && bar_part.tab_index.is_some()
             {
-                // Tabs are indexed starting from 1, therefore we need add 1 to tab_index.
+                // Tabs are indexed starting from 1, so we need add 1 to tab_index.
                 let tab_index: u32 = bar_part.tab_index.unwrap().try_into().unwrap();
                 switch_tab_to(tab_index + 1);
             }
@@ -145,10 +145,10 @@ impl ZellijPlugin for State {
         match background {
             PaletteColor::Rgb((r, g, b)) => {
                 print!("{}\u{1b}[48;2;{};{};{}m\u{1b}[0K", s, r, g, b);
-            },
+            }
             PaletteColor::EightBit(color) => {
                 print!("{}\u{1b}[48;5;{}m\u{1b}[0K", s, color);
-            },
+            }
         }
         self.should_change_tab = false;
     }

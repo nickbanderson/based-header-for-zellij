@@ -9,8 +9,9 @@ fn get_current_title_len(current_title: &[LinePart]) -> usize {
     current_title.iter().map(|p| p.len).sum()
 }
 
-// move elements from before_active and after_active into tabs_to_render while they fit in cols
-// adds collapsed_tabs to the left and right if there's left over tabs that don't fit
+// move elements from before_active and after_active into tabs_to_render while they fit
+// in cols adds collapsed_tabs to the left and right if there's left over tabs that don't
+// fit
 fn populate_tabs_in_tab_line(
     tabs_before_active: &mut Vec<LinePart>,
     tabs_after_active: &mut Vec<LinePart>,
@@ -36,7 +37,8 @@ fn populate_tabs_in_tab_line(
             left_more_tab_index,
         );
 
-        // right_more_tab_index is the first tab to the right of the rightmost visible tab
+        // right_more_tab_index is the first tab to the right of the rightmost visible
+        // tab
         let right_more_tab_index = left_count + tabs_to_render.len();
         let collapsed_right = right_more_message(
             right_count,
@@ -64,22 +66,20 @@ fn populate_tabs_in_tab_line(
             usize::MAX
         };
 
-        // total size is shortened if the next tab to be added is the last one, as that will remove the collapsed tab
+        // total size is shortened if the next tab to be added is the last one, as that
+        // will remove the collapsed tab
         let size_by_adding_left =
-            left.saturating_add(total_size)
-                .saturating_sub(if left_count == 1 {
-                    collapsed_left.len
-                } else {
-                    0
-                });
+            left.saturating_add(total_size).saturating_sub(if left_count == 1 {
+                collapsed_left.len
+            } else {
+                0
+            });
         let size_by_adding_right =
-            right
-                .saturating_add(total_size)
-                .saturating_sub(if right_count == 1 {
-                    collapsed_right.len
-                } else {
-                    0
-                });
+            right.saturating_add(total_size).saturating_sub(if right_count == 1 {
+                collapsed_right.len
+            } else {
+                0
+            });
 
         let left_fits = size_by_adding_left <= cols;
         let right_fits = size_by_adding_right <= cols;
@@ -98,7 +98,8 @@ fn populate_tabs_in_tab_line(
             total_right += tab.len;
             tabs_to_render.push(tab);
         } else {
-            // there's either no space to add more tabs or no more tabs to add, so we're done
+            // there's either no space to add more tabs or no more tabs to add, so we're
+            // done
             tabs_to_render.insert(0, collapsed_left);
             tabs_to_render.push(collapsed_right);
             break;
@@ -171,7 +172,11 @@ fn right_more_message(
     }
 }
 
-fn tab_line_prefix(session_name: Option<&str>, palette: Palette, cols: usize) -> Vec<LinePart> {
+fn tab_line_prefix(
+    session_name: Option<&str>,
+    palette: Palette,
+    cols: usize,
+) -> Vec<LinePart> {
     let prefix_text = " Zellij ".to_string();
 
     let prefix_text_len = prefix_text.chars().count();
