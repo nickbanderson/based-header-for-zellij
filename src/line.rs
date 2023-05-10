@@ -175,42 +175,28 @@ fn right_more_message(
 fn tab_line_prefix(
     session_name: Option<&str>,
     palette: Palette,
-    cols: usize,
+    _cols: usize,
 ) -> Vec<LinePart> {
-    let prefix_text = " Zellij ".to_string();
+    let mut title = String::from("[");
+    title.push_str(session_name.unwrap_or_default());
+    title.push_str("] ");
 
-    let prefix_text_len = prefix_text.chars().count();
-    let text_color = match palette.theme_hue {
-        ThemeHue::Dark => palette.white,
-        ThemeHue::Light => palette.black,
-    };
     let bg_color = match palette.theme_hue {
         ThemeHue::Dark => palette.black,
         ThemeHue::Light => palette.white,
     };
-    let prefix_styled_text = style!(text_color, bg_color).bold().paint(prefix_text);
-    let mut parts = vec![LinePart {
-        part: prefix_styled_text.to_string(),
-        len: prefix_text_len,
+    let text_color = match palette.theme_hue {
+        ThemeHue::Dark => palette.white,
+        ThemeHue::Light => palette.black,
+    };
+
+    let styled_session_name = style!(text_color, bg_color).bold().paint(&title);
+
+    vec![LinePart {
+        part: styled_session_name.to_string(),
+        len: title.len(),
         tab_index: None,
-    }];
-    if let Some(name) = session_name {
-        let name_part = format!("({}) ", name);
-        let name_part_len = name_part.width();
-        let text_color = match palette.theme_hue {
-            ThemeHue::Dark => palette.white,
-            ThemeHue::Light => palette.black,
-        };
-        let name_part_styled_text = style!(text_color, bg_color).bold().paint(name_part);
-        if cols.saturating_sub(prefix_text_len) >= name_part_len {
-            parts.push(LinePart {
-                part: name_part_styled_text.to_string(),
-                len: name_part_len,
-                tab_index: None,
-            })
-        }
-    }
-    parts
+    }]
 }
 
 pub fn tab_separator(capabilities: PluginCapabilities) -> &'static str {
